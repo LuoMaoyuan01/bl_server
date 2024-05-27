@@ -29,7 +29,7 @@ const getBusStops = async(req, res) => {
             
             // Loops over each tr in the tbody and obtains the neccessary data from each tr
             busStopTableBody.each((_idx, el) => {
-                const roadName = $(el).find('td.normal-line.fontbold').text().substring(0, 20).trim();
+                const roadName = $(el).find('td.normal-line.fontbold').text().substring(0, 35).trim();
                 const busStopNo = $(el).find('td.col1bg.center-text').text().trim();
                 const busStopName = $(el).find('td.col2bg.fontbold').text().trim().substring(0, 25).trim();
 
