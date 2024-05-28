@@ -6,9 +6,7 @@ const cheerio = require('cheerio');
 const getBusStops = async(req, res) => {
     const busNumber = req.params.busNumber;
     const dir = req.params.direction;
-    console.log(dir);
     const baseURLdir = `https://www.sbstransit.com.sg/Service/BusService?ServiceType=Basic&ServiceNo=${busNumber}&ServiceType=Basic&Dir=${dir}`;
-    console.log(baseURLdir);
 
     try {
         // Create an array to store desired data
@@ -68,7 +66,6 @@ const getBusStops = async(req, res) => {
         // If check fails, go to dir2 and take their first data to append to busStops
         if(dir == 1){
             const baseURLdir = `https://www.sbstransit.com.sg/Service/BusService?ServiceType=Basic&ServiceNo=${busNumber}&ServiceType=Basic&Dir=2`;
-            console.log(baseURLdir);
             await axios.get(baseURLdir).then((response) => {
                 const $ = cheerio.load(response.data);
                 const busStopTableBodyAmended = $('table.tbres.lefttext.tb-fix tbody tr:eq(1)');
@@ -85,12 +82,15 @@ const getBusStops = async(req, res) => {
 
                 // Check if last item in busStops list corresponds to first item in the second bus path
                 if(busStops[busStops.length - 1]['Bus Stop Number'] != busData['Bus Stop Number']){
-                    console.log(busData['Bus Stop Number']);
-                    console.log(busStops[busStops.length - 1]['Bus Stop Number']);
                     busStops.push(busData);
                 }
             })
 
+        }
+
+        // Iterate through list of arrays and create new key 'Road + Bus Stop' which joins road name to bus stop name for more accurate geolocation
+        for(let j = 0; j<busStops.length; j++){
+            busStops[j]['Bus Stop + Road'] = busStops[j]['Bus Stop Name'] + ' ' + busStops[j]['Road Name'];
         }
 
         // Return value if successful
