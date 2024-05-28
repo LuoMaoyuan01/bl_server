@@ -6,7 +6,7 @@ const getBusStops = require('../controllers/bsScrapper.js');
 const router = express.Router();
 
 // Route handlers for GET requests
-router.get('/:busNumber', getBusStops);
+router.get('/:busNumber/:direction', getBusStops);
 
 
 module.exports = router;

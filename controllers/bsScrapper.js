@@ -5,9 +5,12 @@ const cheerio = require('cheerio');
 // Function to webscrap transitlink
 const getBusStops = async(req, res) => {
     const busNumber = req.params.busNumber;
-    const baseURL = `https://www.sbstransit.com.sg/Service/BusService?ServiceType=Basic&ServiceNo=${busNumber}`;    
+    const dir = req.params.direction;
+    const baseURLdir = `https://www.sbstransit.com.sg/Service/BusService?ServiceType=Basic&ServiceNo=${busNumber}&ServiceType=Basic&Dir=${dir}`;
+    console.log(baseURLdir);
+
     try {
-        await axios.get(baseURL).then((response) => {
+        await axios.get(baseURLdir).then((response) => {
 
             // Loads HTML content obtained and parses it as a Cheerio object to be used to manipulate HTML data
             // $ variable assigned to Cheerio object, mimicking jQuery usage in the browser. Allows usage of jQuery style selectors & methods
@@ -43,6 +46,24 @@ const getBusStops = async(req, res) => {
                 // Push data into the list
                 busStops.push(busData);
             })
+
+            // Need a check to see if the last busData contains the final stop (eg: bus 70 has wonky data)
+            // If check fails, go to dir2 and take their first data to append to busStops
+
+
+            // Iterate through 'roadName' field and check if next row's 'roadName' field is empty
+            // If empty, set to current 'roadName' field value
+            for(let i = 0; i < busStops.length; i++){
+                if(i+1 == busStops.length){
+                    break;
+                }
+                if(busStops[i+1]['Road Name'] == ''){
+                    busStops[i+1]['Road Name'] = busStops[i]['Road Name'];
+                }
+                else{
+                    continue;
+                }
+            }
 
             // Return value if successful
             res.status(200).json(busStops);
