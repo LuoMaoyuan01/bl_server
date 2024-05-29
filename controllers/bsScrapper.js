@@ -91,7 +91,7 @@ const getBusStops = async(req, res) => {
         // Iterate through list of arrays and create new key 'Road + Bus Stop' which joins road name to bus stop name for more accurate geolocation
         for(let j = 0; j<busStops.length; j++){
             // Utilize regex to replace all whitespaces within the string to '+'
-            // Concatenate 2 array fields into a new field
+            // Concatenate 2 array fields into a new fi eld
             busStops[j]['Bus Stop + Road'] = (busStops[j]['Bus Stop Name'] + '+' + busStops[j]['Road Name']).replace(/\s/g, "+");
         }
 
