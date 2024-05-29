@@ -104,7 +104,8 @@ const getBusStops = async(req, res) => {
             busIDS.each((_idx, el) => {
                 for(let z = 0; z<busStops.length; z++){
                     if($(el).attr('name') == busStops[z]['Bus Stop Number']){
-                        busStops[z]['latLng'] = ($(el).find('lat').text().trim() + ',' + $(el).find('long').text().trim());
+                        busStops[z]['lat'] = $(el).find('lat').text().trim();
+                        busStops[z]['lng'] = $(el).find('long').text().trim();
                     }
                 }
                 
