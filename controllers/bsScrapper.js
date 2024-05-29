@@ -93,9 +93,24 @@ const getBusStops = async(req, res) => {
             // Utilize regex to replace all whitespaces within the string to '+'
             // Concatenate 2 array fields into a new field
             busStops[j]['Bus Stop + Road'] = (busStops[j]['Bus Stop Name'] + '+' + busStops[j]['Road Name']).replace(/\s/g, "+");
-
-            
         }
+
+        // Obtain lta.gov.sg xml file on bus stop lat & lng
+        // Append latlng of busstop corresponding to the correct bus stop number
+        const ltaURLdir = "https://www.lta.gov.sg/map/busService/bus_stops.xml";
+        await axios.get(ltaURLdir).then((response) => {
+            $ = cheerio.load(response.data, {xmlMode: true});
+            busIDS = $('busstops busstop:gt(0)');
+            busIDS.each((_idx, el) => {
+                for(let z = 0; z<busStops.length; z++){
+                    if($(el).attr('name') == busStops[z]['Bus Stop Number']){
+                        busStops[z]['latLng'] = ($(el).find('lat').text().trim() + ',' + $(el).find('long').text().trim());
+                    }
+                }
+                
+            })
+        })
+        
 
         // Return value if successful
         res.status(200).json(busStops);
