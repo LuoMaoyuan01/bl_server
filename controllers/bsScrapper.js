@@ -34,7 +34,7 @@ const getBusStops = async(req, res) => {
             busStopTableBody.each((_idx, el) => {
                 const busStopNo = $(el).attr('name').trim();
                 const busStopName = $(el).find('details').text().trim();
-                console.log(busStopNo);
+                console.log(busStopNo, 'bsScrapper.js');
 
 
                 const busData = {
@@ -43,7 +43,9 @@ const getBusStops = async(req, res) => {
                 };
 
                 // Push data into the list
+                console.log(busData);
                 busStops.push(busData); 
+
             });
 
 
