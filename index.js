@@ -11,9 +11,6 @@ const busRoutes = require('./routes/busStops.js');
 // Create instance of express application
 const app = express();
 
-// Specify port number for the server
-const port = 5000;
-
 // Middleware used by app
 app.use(cors());
 
@@ -21,8 +18,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/scrape', busRoutes);
 
-// Start server & listen to the port
+// Start server & listen to the port & IP specified
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const IP = process.env.IP || "0.0.0.0"
+app.listen(PORT, IP, () => {
+  console.log(`Server is running on IP ${IP}, port ${PORT}`);
 });

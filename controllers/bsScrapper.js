@@ -2,13 +2,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-//https://www.lta.gov.sg/map/busService/bus_route_xml/851.xml
+// Template URL to send GET request to: https://www.lta.gov.sg/map/busService/bus_route_xml/851.xml
 
 // Function to webscrap lta website
 const getBusStops = async(req, res) => {
     const busNumber = req.params.busNumber;
     const dir = req.params.direction - 1;
-    const baseURLdir = `https://www.lta.gov.sg/map/busService/bus_route_xml/${busNumber}.xml`;
+    const baseURLdir = `https://www.lta.gov.sg/map/busService/bus_route_xml/${busNumber.toString()}.xml`;
+    console.log(baseURLdir);
 
     try {
         // Create an array to store desired data
@@ -34,7 +35,7 @@ const getBusStops = async(req, res) => {
             busStopTableBody.each((_idx, el) => {
                 const busStopNo = $(el).attr('name').trim();
                 const busStopName = $(el).find('details').text().trim();
-                console.log(busStopNo, 'bsScrapper.js');
+                // console.log(busStopNo, 'bsScrapper.js');
 
 
                 const busData = {
@@ -43,7 +44,6 @@ const getBusStops = async(req, res) => {
                 };
 
                 // Push data into the list
-                console.log(busData);
                 busStops.push(busData); 
 
             });
@@ -117,7 +117,7 @@ const getBusStops = async(req, res) => {
         
 
         // Return value if successful
-        console.log(busStops)
+        console.log('Finished Scrapping');
         res.status(200).json(busStops);
 
     }
