@@ -58,6 +58,11 @@ const getBusStops = async(req, res) => {
                 
             })
         })
+
+        // Create a field with Bus stop number and Bus stop name
+        for(let x = 0; x < busStops.length; x++){
+            busStops[x]['Full Name'] = (busStops[x]['Bus Stop Name'].toString() + ',' + 'Bus Stop ' + busStops[x]['Bus Stop Number'].toString());
+        }
         
 
         // Return value if successful
