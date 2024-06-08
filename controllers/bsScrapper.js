@@ -13,6 +13,7 @@ const getBusStops = async(req, res) => {
     try {
         // Create an array to store desired data
         const busStops = [];
+        console.log(baseURLdir);
 
         await axios.get(baseURLdir).then((response) => {
 
