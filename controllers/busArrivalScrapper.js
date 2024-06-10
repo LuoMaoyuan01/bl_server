@@ -1,18 +1,21 @@
 // Import required libraries
 const axios = require('axios');
+require('dotenv').config();
 
 // Import required functions
-const { getSGTTimeDifference } = require('../utils/getSGTTimeDifference');
+const getSGTTimeDifference = require('../utils/getSGTTimeDifference');
 // Template URL to send GET request to: http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=???
 
 const getBusArrival = async (req, res) => {
-    LTA_DATAMALL_API_KEY = process.env.REACT_APP_LTA_DATAMALL_API_KEY;
-    const busStopCode = req.params.busStopCode;
+    const LTA_DATAMALL_API_KEY = process.env.REACT_APP_LTA_DATAMALL_API_KEY;
+    const busStopCode = req.params.busStopCode
     const baseURLdir = `http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=${busStopCode}`;
 
     const headers = {
-        'AccountKey': LTA_DATAMALL_API_KEY, // Replace with your AccountKey
-        'accept': 'application/json'
+        AccountKey: LTA_DATAMALL_API_KEY, // Replace with your AccountKey
+        accept: 'application/json',
+        // Connection: 'keep-alive',
+        // 'Accept-Encoding': 'gzip, deflate,br',
     }
 
     try{

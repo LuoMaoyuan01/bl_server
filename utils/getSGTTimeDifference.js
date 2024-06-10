@@ -1,32 +1,31 @@
 // Converts ISO 8601 date and time representation to MM/DD/YYYY, HH:MM:SS AM/PM SGT format
 
-function getSGTTimeDifference(dateString) {
-    // Parse the given date string
+const getSGTTimeDifference = (dateString) => {
+    // Parse the given date string as UTC time
     const givenDate = new Date(dateString);
 
-    // Get the current time in Singapore Time (SGT)
-    const options = { timeZone: 'Asia/Singapore' };
-    const formatter = new Intl.DateTimeFormat('en-US', options);
-
-    // Get the current date and time in UTC
+    // Get the current time in UTC
     const now = new Date();
 
-    // Format the current date and time to SGT
-    const nowSGTString = formatter.formatToParts(now)
-        .map(({ type, value }) => {
-            if (type === 'timeZoneName') return '';
-            return value;
-        }).join('');
+    // Convert the given date to Singapore Time (SGT)
+    const givenDateSGT = new Date(givenDate.getTime() + (8 * 60 * 60 * 1000));
 
-    const nowSGT = new Date(`${nowSGTString} UTC+08:00`);
+    // Convert the current time to Singapore Time (SGT)
+    const nowSGT = new Date(now.getTime() + (8 * 60 * 60 * 1000));
 
     // Calculate the difference in milliseconds
-    const differenceInMilliseconds = nowSGT - givenDate;
+    const differenceInMilliseconds = givenDateSGT - nowSGT;
 
     // Convert the difference to minutes
     const differenceInMinutes = Math.floor(differenceInMilliseconds / 1000 / 60);
+    
+    // Check if the difference is <= 0 minutes
+    if(differenceInMinutes <= 0){
+        return 'Arriving';
+    }
 
-    return differenceInMinutes;
+    // Return in string format
+    return (differenceInMinutes.toString() + ' Min');
 }
 
 module.exports = getSGTTimeDifference;
