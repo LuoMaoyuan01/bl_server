@@ -23,6 +23,10 @@ const getSGTTimeDifference = (dateString) => {
     if(differenceInMinutes <= 0){
         return 'Arriving';
     }
+    
+    if(isNaN(differenceInMinutes) || differenceInMinutes == 'NaN' || differenceInMinutes == null){
+        return 'No Est. Available';
+    }
 
     // Return in string format
     return (differenceInMinutes.toString() + ' Min');
