@@ -54,6 +54,16 @@ This client side code is developed with [Node JS](https://nodejs.org/) and teste
 - docker build -t bl_server:v100 . (custom version number in sequence) <br/>
 - docker run -p 5000:5000 bl_server:v100 (custom version number in sequence) <br/>
 
+## Server Project Structure
+```
+├── BL_SERVER
+|   ├── controllers
+|   ├── data
+|   ├── models
+|   ├── routes
+|   ├── utils
+```
+
 ## Technology Stacks Used
 
 - [Node.js](https://nodejs.org/) - A JavaScript runtime built on Chrome's V8 JavaScript engine. <br/>
